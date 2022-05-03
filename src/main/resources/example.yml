@@ -1,0 +1,44 @@
+example:
+  condition_any: true
+  condition:
+    - check: "%player_name% == 404E"
+    - inWorld: [ world, world_nether, world_the_end ]
+  on_allow:
+    - msg: 你所在的世界%player_world%符合要求
+    - giveMoney: 100
+  on_deny:
+    - script: example_on_deny
+example_on_deny:
+  condition_any: true
+  condition:
+    - hasPerm: escript.exec.example
+  on_allow:
+    - msg: 你拥有权限'escript.exec.example'
+    - giveMoney: 100
+    - sound:
+        type: block.anvil.place
+        volume: 1
+        pitch: 1
+    - title:
+        title: awa
+        subtitle: qaq
+        fadein: 20
+        stay: 20
+        fadeout: 20
+  on_deny:
+    - script: example_on_deny
+example_on_deny2:
+  condition_any: true
+  condition:
+    - hasItem:
+        type: golden apple
+        lore:
+          - awa
+          - qaq
+        enchant:
+          - unbreaking
+  on_allow:
+    - msg: 你拥有权限'escript.exec.example'
+    - giveMoney: 100
+  on_deny:
+    - msg: 你不符合要求
