@@ -41,6 +41,8 @@
 
 [example.yml](src/main/resources/example.yml)
 
+[毒.yml](exmaples/毒.yml)
+
 ## 下载
 
 - [最新版](https://github.com/4o4E/EScript/releases/latest)
