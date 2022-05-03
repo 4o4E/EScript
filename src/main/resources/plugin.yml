@@ -3,7 +3,7 @@ version: ${version}
 main: top.e404.escript.EScript
 api-version: 1.13
 authors: [ 404E ]
-depend:
+softdepend:
   - Vault
   - PlaceholderAPI
 commands:
