@@ -45,6 +45,15 @@
 
 - [最新版](https://github.com/4o4E/EScript/releases/latest)
 
+## 计划添加
+
+- [ ] 距离计算
+- [ ] 伤害
+- [ ] mmoitems物品支持
+- [ ] bossbar支持
+- [ ] 传送支持
+- [ ] 对应全体玩家的消息, 指令, title, sound
+
 ## 更新记录
 
 ```

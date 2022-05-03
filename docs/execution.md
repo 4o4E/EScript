@@ -38,11 +38,13 @@ on_allow:
 
 不建议使用, 执行流程是设置玩家为op -> 执行指令 -> 重置玩家op
 
+(若执行前不是op, 执行后也不会是op)
+
 ### 示例
 
 ```yaml
 on_allow:
-  - cmd: home
+  - op: home
 ```
 
 ## `cooldown`
@@ -53,7 +55,7 @@ on_allow:
 
 ### 效果
 
-给玩家添加自定义cd
+修改玩家的自定义cd
 
 ### 示例
 
@@ -64,10 +66,11 @@ on_allow:
     # add: 添加cd
     # set: 设置cd
     # reset: 重置cd
-    type: add # set / reset
+    type: add
     # cd名字
     name: 自定义cd
     # cd数值
+    # 单位毫秒
     value: 1000
 ```
 
@@ -79,8 +82,7 @@ on_allow:
 
 ### 效果
 
-延迟执行此项后的执行项
-延迟单位: 刻
+延迟执行此项后的执行项, 单位: 刻
 
 ### 示例
 
@@ -296,7 +298,7 @@ on_allow:
 
 ### 效果
 
-添加药水效果
+移除药水效果(若存在)
 
 ### 示例
 
@@ -420,9 +422,9 @@ on_allow:
 ```yaml
 on_allow:
   # 在原有的基础上增加行走速度
-  - walkSpeed: +10
+  - walkSpeed: +5
   # 在原有的基础上减少行走速度
-  - walkSpeed: -10
+  - walkSpeed: -5
   # 设置行走速度
-  - walkSpeed: 10
+  - walkSpeed: 5
 ```
