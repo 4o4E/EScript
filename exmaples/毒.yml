@@ -1,0 +1,20 @@
+带毒攻击:
+  # 判断, 若不拥有解毒剂效果则使其中毒
+  condition:
+    - inCd: 解毒剂
+  # 判断为true时的处理(拥有解读药剂效果)
+  on_allow: []
+  # 判断为false时的处理(不拥有解读药剂效果)
+  on_deny:
+    - addEffect:
+        type: POISON
+        level: 1
+        duration: 200
+
+解毒剂:
+  # 设置自定义cd, 名字为解毒剂
+  on_allow:
+    - cd:
+        type: add
+        name: 解毒剂
+        value: 60000
