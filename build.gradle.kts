@@ -8,7 +8,7 @@ plugins {
 
 allprojects {
     group = "top.e404"
-    version = "1.0.0"
+    version = "1.0.1"
 }
 
 repositories {
@@ -43,6 +43,7 @@ tasks {
     shadowJar {
         archiveFileName.set("${project.name}-${project.version}.jar")
         exclude("META-INF/*")
+        relocate("org.bstats", "top.e404.escript.bstats")
         doFirst {
             for (file in File("jar").listFiles() ?: arrayOf()) {
                 println("正在删除`${file.name}`")

@@ -1,5 +1,6 @@
 package top.e404.escript
 
+import org.bstats.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import top.e404.escript.command.CommandManager
@@ -12,6 +13,7 @@ import top.e404.escript.listener.PlayerCacheListener
 import top.e404.escript.script.ScriptManager
 import top.e404.escript.script.conditions.ConditionManager
 import top.e404.escript.script.executable.ExecutionManager
+import top.e404.escript.update.Update
 import top.e404.escript.util.color
 import top.e404.escript.util.info
 
@@ -22,6 +24,7 @@ class EScript : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
+        Metrics(this, 15118)
         Config.load(null)
         ConditionManager.load()
         ExecutionManager.load()
@@ -32,6 +35,7 @@ class EScript : JavaPlugin() {
         HookManager.update()
         PlayerCacheListener.register()
         CommandManager.register("escript")
+        Update.init()
         info("&a加载完成, 作者404E".color())
     }
 
