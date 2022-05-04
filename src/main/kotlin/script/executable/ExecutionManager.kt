@@ -33,9 +33,7 @@ object ExecutionManager {
         }
     }
 
-    fun parse(pair: Pair<*, *>): Execution {
-        val head = pair.first.toString()
-        val content = pair.second
+    fun parse(head: String, content: Any?): Execution {
         for (parser in parsers) {
             if (!parser.matchHead(head)) continue
             return parser.parse(content)

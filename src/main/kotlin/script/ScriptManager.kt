@@ -70,19 +70,43 @@ object ScriptManager {
             val name = path.lastIndexOf('.').let { i ->
                 if (i == -1) path else path.substring(i)
             }
-            val any = getBoolean("condition_any")
+            val any = cfg.getBoolean("condition_any")
             debug("开始加载脚本$path(条件)")
-            val condition = getMapList("condition").mapNotNull {
-                ConditionManager.parse(it.entries.first().toPair())
-            }
+            val condition = cfg.getList("condition")?.mapNotNull {
+                when (it) {
+                    null -> return@mapNotNull null
+                    is Map<*, *> -> {
+                        val e = it.entries.first()
+                        ConditionManager.parse(e.key.toString(), e.value)
+                    }
+                    else -> ConditionManager.parse(it.toString(), null)
+                }
+            } ?: emptyList()
+            debug("完成加载脚本$path(条件), 共${condition.size}条")
             debug("开始加载脚本$path(on_allow)")
-            val onAllow = cfg.getMapList("on_allow").map {
-                ExecutionManager.parse(it.entries.first().toPair())
-            }
+            val onAllow = cfg.getList("on_allow")?.mapNotNull {
+                when (it) {
+                    null -> return@mapNotNull null
+                    is Map<*, *> -> {
+                        val e = it.entries.first()
+                        ExecutionManager.parse(e.key.toString(), e.value)
+                    }
+                    else -> ExecutionManager.parse(it.toString(), null)
+                }
+            } ?: emptyList()
+            debug("完成加载脚本$path(on_allow), 共${onAllow.size}项")
             debug("开始加载脚本$path(on_deny)")
-            val onDeny = cfg.getMapList("on_deny").map {
-                ExecutionManager.parse(it.entries.first().toPair())
-            }
+            val onDeny = cfg.getList("on_deny")?.mapNotNull {
+                when (it) {
+                    null -> null
+                    is Map<*, *> -> {
+                        val e = it.entries.first()
+                        ExecutionManager.parse(e.key.toString(), e.value)
+                    }
+                    else -> ExecutionManager.parse(it.toString(), null)
+                }
+            } ?: emptyList()
+            debug("完成加载脚本$path(on_deny), 共${onDeny.size}项")
             Script(name, source, any, condition, onAllow, onDeny)
         } ?: throw ParseException("无效脚本: $path")
 }

@@ -66,7 +66,7 @@ class Script(
     }
 
     fun onDeny(p: Player) {
-        execute(p, "deny", 1, allow)
+        execute(p, "deny", 1, deny)
     }
 
     override fun invoke(p: Player) {

@@ -6,7 +6,11 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import top.e404.escript.EScript
-import top.e404.escript.config.CustomCooldown
+import top.e404.escript.config.CustomCooldown.cdDuration
+import top.e404.escript.config.CustomCooldown.cdEnd
+import top.e404.escript.config.CustomCooldown.formatMillisToDate
+import top.e404.escript.config.CustomCooldown.formatMillisToDuration
+import top.e404.escript.config.CustomCooldown.inCd
 import top.e404.escript.util.alsoDebug
 
 object PlaceholderAPIHook : Hook, PlaceholderExpansion() {
@@ -37,6 +41,7 @@ object PlaceholderAPIHook : Hook, PlaceholderExpansion() {
         player: Player?,
         params: String
     ): String {
+        if (player == null) return params
         val i = params.indexOf("_")
         val head: String
         val value: String
@@ -48,30 +53,28 @@ object PlaceholderAPIHook : Hook, PlaceholderExpansion() {
             value = params.substring(i + 1)
         }
         return when (head.lowercase()) {
-            "mscd" -> { // %script_mscd_<cdName>%
+            "mscd" -> { // 剩余时长 单位ms %script_mscd_<cd-name>%
                 if (value == "") return params
-                if (player == null) return "null"
-                CustomCooldown.getPlayerCooldown(player, value)?.toString() ?: "-1"
+                player.cdDuration(value)?.toString() ?: "-1"
             }
-            "cd" -> { // %script_cd_<cdName>%
+            "cd" -> { // 剩余时长 %script_cd_<cd-name>%
                 if (value == "") return params
-                if (player == null) return "null"
-                CustomCooldown.getPlayerCooldown(player, value)?.let { (it / 1000).toString() } ?: "-1"
+                player.cdDuration(value)?.let { (it / 1000).toString() } ?: "-1"
             }
-            "formatcd" -> { // %script_cd_<cdName>%
+            "formatedcd" -> { // 剩余时长 格式化 %script_cd_<cd-name>%
                 if (value == "") return params
-                if (player == null) return "null"
-                CustomCooldown.getPlayerCooldown(player, value)?.let { (it / 1000).toString() } ?: "-1"
+                player.cdDuration(value)?.formatMillisToDuration() ?: ""
             }
-            "cdstamp" -> { // %script_cdstamp_<cdName>%
+            "cdstamp" -> { // 结束时间戳 %script_cdstamp_<cd-name>%
                 if (value == "") return params
-                if (player == null) return "null"
-                CustomCooldown.getPlayerCooldownStamp(player, value)?.toString() ?: "-1"
+                player.cdEnd(value)?.toString() ?: "-1"
             }
-            "incd" -> { // %script_incd%
-                if (player == null) return "false"
-                val cd = CustomCooldown.getPlayerCooldown(player, value) ?: return "false"
-                return (cd > 0).toString()
+            "formatedcdstamp" -> { // 结束时间戳 格式化 %script_cdstamp_<cd-name>%
+                if (value == "") return params
+                player.cdEnd(value)?.formatMillisToDate() ?: "-1"
+            }
+            "incd" -> { // 是否在cd内 %script_incd_<cd-name>%
+                return player.inCd(value).toString()
             }
             // todo
             else -> params

@@ -1,7 +1,9 @@
 package top.e404.escript.config
 
+import org.bukkit.OfflinePlayer
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitTask
+import top.e404.escript.util.runTaskLater
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -9,75 +11,81 @@ import java.util.regex.Pattern
 object CustomCooldown : AbstractConfig("cooldown.yml", clearBeforeSave = true) {
     // map<cd项目, map<玩家UID, 时长>>
     val cooldown = mutableMapOf<String, MutableMap<String, Long>>()
+
+    private var task: BukkitTask? = null
+    private fun scheduleSave() {
+        if (task != null) return
+        task = runTaskLater(1200) { save(null) }
+    }
+
+    override fun YamlConfiguration.beforeSave() = cleanTimeOut()
     override fun YamlConfiguration.onLoad() {
+        task?.cancel()
         for (key in getKeys(false)) getConfigurationSection(key)?.let { cdObj ->
             val map = cooldown.getOrPut(key) { mutableMapOf() }
             for (uid in cdObj.getKeys(false)) map[uid] = cdObj.getLong(uid)
         }
     }
 
-    /**
-     * 获取玩家自定cd的到期时间戳
-     *
-     * @param p 玩家
-     * @param name cd名字
-     * @return cd到期时间戳, 若不存在则返回null
+    fun now() = System.currentTimeMillis()
+
+    fun OfflinePlayer.uuid() = uniqueId.toString()
+
+    /*
+     * API
      */
-    fun getPlayerCooldownStamp(p: Player, name: String): Long? {
-        return getPlayerCooldownStampByUuid(p.uniqueId.toString(), name)
+
+    /**
+     * 检测是否在cd内
+     *
+     * @param uuid 玩家id
+     * @param name cd名字
+     * @return 若没有此cd则返回false
+     */
+    fun inCd(uuid: String, name: String): Boolean {
+        val end = cdEnd(uuid, name) ?: return false
+        return end > now()
+    }
+
+    fun OfflinePlayer.inCd(name: String): Boolean {
+        return inCd(uuid(), name)
     }
 
     /**
-     * 通过玩家UUID获得其自定cd的到期时间戳
+     * 获取cd剩余时长
+     *
+     * @param uuid 玩家id
+     * @param name cd名字
+     * @return 若没有此cd则返回null
+     */
+    fun cdDuration(uuid: String, name: String): Long? {
+        return cdEnd(uuid, name)?.let { it - now() }
+    }
+
+    fun OfflinePlayer.cdDuration(name: String): Long? {
+        return cdDuration(uuid(), name)
+    }
+
+    /**
+     * 获取cd结束时间戳
      *
      * @param uuid 玩家uuid
      * @param name cd名字
-     * @return cd到期时间戳, 若不存在则返回null
+     * @return 若不存在则返回null
      */
-    fun getPlayerCooldownStampByUuid(uuid: String, name: String): Long? {
+    fun cdEnd(uuid: String, name: String): Long? {
         val map = cooldown[name] ?: return null
         val now = System.currentTimeMillis()
         val l = map[uuid] ?: return null
-        if (l < now) {
+        if (l <= now) {
             cleanTimeOut(uuid, name)
             return null
         }
         return l
     }
 
-    /**
-     * 获取玩家自定cd的剩余时长
-     *
-     * @param p 玩家
-     * @param name cd名字
-     * @return cd剩余时长, 若不存在则返回null
-     */
-    fun getPlayerCooldown(p: Player, name: String): Long? {
-        return getPlayerCooldownByUuid(p.uniqueId.toString(), name)
-    }
-
-    /**
-     * 通过玩家UUID获取其自定cd的剩余时长
-     *
-     * @param uuid 玩家uuid
-     * @param name cd名字
-     * @return cd剩余时长, 若不存在则返回null
-     */
-    fun getPlayerCooldownByUuid(uuid: String, name: String): Long? {
-        val stamp = getPlayerCooldownStampByUuid(uuid, name) ?: return null
-        return stamp - System.currentTimeMillis()
-    }
-
-    /**
-     * 给玩家添加一个自定义cd
-     *
-     * @param p 玩家
-     * @param name cd名字
-     * @param length 时长, 单位毫秒
-     * @return 若已有cd项目且时长比新cd长则返回false
-     */
-    fun setPlayerCooldown(p: Player, name: String, length: Long): Boolean {
-        return setPlayerCooldownByUuid(p.uniqueId.toString(), name, length)
+    fun OfflinePlayer.cdEnd(name: String): Long? {
+        return cdEnd(uuid(), name)
     }
 
     /**
@@ -88,25 +96,18 @@ object CustomCooldown : AbstractConfig("cooldown.yml", clearBeforeSave = true) {
      * @param length 时长, 单位毫秒
      * @return 若已有cd项目且时长比新cd长则返回false
      */
-    fun setPlayerCooldownByUuid(uuid: String, name: String, length: Long): Boolean {
+    fun setCd(uuid: String, name: String, length: Long): Boolean {
         val map = cooldown.getOrPut(name) { mutableMapOf() }
         val old = map[uuid]
         val s = System.currentTimeMillis() + length
         if (old != null && old > s) return false
         map[uuid] = System.currentTimeMillis() + length
+        scheduleSave()
         return true
     }
 
-    /**
-     * 给玩家添加cd, 若cd不存在或cd已过时则从当前时间开始计算
-     *
-     * @param p 玩家
-     * @param name cd名字
-     * @param length 时长, 单位毫秒
-     * @return 当前时长
-     */
-    fun addPlayerCooldown(p: Player, name: String, length: Long): Long {
-        return addPlayerCooldownByUuid(p.uniqueId.toString(), name, length)
+    fun OfflinePlayer.setCd(name: String, length: Long): Boolean {
+        return setCd(uuid(), name, length)
     }
 
     /**
@@ -117,25 +118,19 @@ object CustomCooldown : AbstractConfig("cooldown.yml", clearBeforeSave = true) {
      * @param length 时长, 单位毫秒
      * @return 当前时长
      */
-    fun addPlayerCooldownByUuid(uuid: String, name: String, length: Long): Long {
+    fun addCd(uuid: String, name: String, length: Long): Long {
         val map = cooldown.getOrPut(name) { mutableMapOf() }
         var cd = map[uuid]
         val now = System.currentTimeMillis()
         if (cd == null || cd < now) cd = now
         cd += length
         map[uuid] = cd
+        scheduleSave()
         return cd
     }
 
-    /**
-     * 重置玩家cd
-     *
-     * @param p 玩家
-     * @param name cd名字
-     * @return 若重置则返回true
-     */
-    fun resetPlayerCooldown(p: Player, name: String): Long? {
-        return resetPlayerCooldownByUuid(p.uniqueId.toString(), name)
+    fun OfflinePlayer.addCd(name: String, length: Long): Long {
+        return addCd(uuid(), name, length)
     }
 
     /**
@@ -145,16 +140,22 @@ object CustomCooldown : AbstractConfig("cooldown.yml", clearBeforeSave = true) {
      * @param name cd名字
      * @return 若重置则返回true
      */
-    fun resetPlayerCooldownByUuid(uuid: String, name: String): Long? {
+    fun resetCd(uuid: String, name: String): Long? {
         val map = cooldown[name] ?: return null
         val v = map.remove(uuid)
         if (map.isEmpty()) cooldown.remove(name)
+        scheduleSave()
         return v
     }
 
-    /**
-     * 清理无效的cd
+    fun OfflinePlayer.resetCd(name: String): Long? {
+        return resetCd(uuid(), name)
+    }
+
+    /*
+     * 清理
      */
+
     fun cleanTimeOut() {
         val l = System.currentTimeMillis()
         for (map in cooldown.values) {
@@ -167,11 +168,15 @@ object CustomCooldown : AbstractConfig("cooldown.yml", clearBeforeSave = true) {
         cooldown[name]!!.remove(uuid)
     }
 
+    /*
+     * 格式化
+     */
+
     private val sdf = SimpleDateFormat("M月d日 H:m:s")
 
-    fun Long.formatAsDate() = sdf.format(Date(this))!!
+    fun Long.formatMillisToDate() = sdf.format(Date(this))!!
 
-    fun Long.formatAsMillis(): String {
+    fun Long.formatMillisToDuration(): String {
         var t = this / 1000
         var s = ""
         var temp = t % 60
@@ -198,7 +203,7 @@ object CustomCooldown : AbstractConfig("cooldown.yml", clearBeforeSave = true) {
      *
      * @return 时长, 解析异常返回null
      */
-    fun String.parseAsSecond(): Long? {
+    fun String.parseDurationToSecond(): Long? {
         toLongOrNull()?.let { return it }
         val m = durationPattern.matcher(this).apply {
             if (!find()) return null

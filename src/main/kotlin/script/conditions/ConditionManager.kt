@@ -33,9 +33,7 @@ object ConditionManager {
         }
     }
 
-    fun parse(pair: Pair<*, *>): Condition {
-        val head = pair.first.toString()
-        val content = pair.second
+    fun parse(head: String, content: Any?): Condition {
         for (parser in parsers) {
             if (!parser.matchHead(head)) continue
             return parser.parse(content)
