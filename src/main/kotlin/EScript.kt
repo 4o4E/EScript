@@ -7,6 +7,7 @@ import top.e404.escript.command.CommandManager
 import top.e404.escript.config.Config
 import top.e404.escript.config.CustomCooldown
 import top.e404.escript.config.PlayerCache
+import top.e404.escript.config.WorldScript
 import top.e404.escript.hook.HookManager
 import top.e404.escript.hook.PlaceholderAPIHook
 import top.e404.escript.listener.PlayerCacheListener
@@ -32,6 +33,7 @@ class EScript : JavaPlugin() {
         CustomCooldown.load(null)
         PlayerCache.load(null)
         PlayerCache.onSwap()
+        WorldScript.load(null)
         HookManager.update()
         PlayerCacheListener.register()
         CommandManager.register("escript")

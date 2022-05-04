@@ -1,0 +1,10 @@
+# 世界world的定时触发脚本, 仅会在此世界中的玩家身上触发
+# 世界不存在时无效
+world_example:
+  - # 触发的间隔, 单位刻
+    duration: 100
+    # 给玩家触发的脚本
+    script: example
+  - # 支持多个
+    duration: 200
+    script: example_2

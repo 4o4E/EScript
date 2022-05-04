@@ -3,6 +3,7 @@ package top.e404.escript.command
 import org.bukkit.command.CommandSender
 import top.e404.escript.config.Config
 import top.e404.escript.config.CustomCooldown
+import top.e404.escript.config.WorldScript
 import top.e404.escript.hook.HookManager
 import top.e404.escript.script.ScriptManager
 import top.e404.escript.util.color
@@ -18,6 +19,7 @@ object Reload : AbstractCommand(
         Config.load(sender)
         ScriptManager.load(sender)
         CustomCooldown.load(sender)
+        WorldScript.load(sender)
         HookManager.update()
         sender.sendMsgWithPrefix("&a重载完成")
     }
