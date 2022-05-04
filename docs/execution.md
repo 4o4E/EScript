@@ -91,6 +91,19 @@ on_allow:
   - delay: 20
 ```
 
+## `damage`
+
+### 效果
+
+对玩家造成伤害
+
+### 示例
+
+```yaml
+on_allow:
+  - damage: 20.0
+```
+
 ## `health`
 
 ### 效果
