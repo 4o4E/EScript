@@ -1,5 +1,6 @@
 package top.e404.escript.script.executable.list
 
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import top.e404.escript.annotation.ExecutionSign
 import top.e404.escript.hook.PlaceholderAPIHook.papi
@@ -18,21 +19,27 @@ object Health : ExecutionParser {
         return when {
             s.startsWith("+") -> Execution { p: Player ->
                 try {
-                    p.health += s.papi(p).toDouble()
+                    val result = p.health + s.papi(p).toDouble()
+                    val max = p.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: 20.0
+                    p.health = result.coerceIn(0.0..max)
                 } catch (t: Throwable) {
                     throw ExecutionException("设置玩家生命值时出现异常, 脚本: `$content`", t)
                 }
             }
             s.startsWith("-") -> Execution { p: Player ->
                 try {
-                    p.health -= s.papi(p).toDouble()
+                    val result = p.health - s.papi(p).toDouble()
+                    val max = p.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: 20.0
+                    p.health = result.coerceIn(0.0..max)
                 } catch (t: Throwable) {
                     throw ExecutionException("设置玩家生命值时出现异常, 脚本: `$content`", t)
                 }
             }
             else -> Execution { p: Player ->
                 try {
-                    p.health = s.papi(p).toDouble()
+                    val result = s.papi(p).toDouble()
+                    val max = p.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: 20.0
+                    p.health = result.coerceIn(0.0..max)
                 } catch (t: Throwable) {
                     throw ExecutionException("设置玩家生命值时出现异常, 脚本: `$content`", t)
                 }
