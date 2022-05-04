@@ -40,13 +40,13 @@ condition:
   - inCd: 自定义cd名字
 ```
 
-## `outcd`
+## `notInCooldown`
 
 ### 别名
 
+- `outcd`
 - `notIncd`
 - `outCooldown`
-- `notIncooldown`
 
 ### 效果
 
@@ -57,6 +57,76 @@ condition:
 ```yaml
 condition:
   - outCd: 自定义cd名字
+```
+
+## `isDead`
+
+### 别名
+
+- `isNotAlive`
+
+### 效果
+
+检查是否死亡
+
+### 示例
+
+```yaml
+condition:
+  - isDead
+```
+
+## `isNotDead`
+
+### 别名
+
+- `isAlive`
+
+### 效果
+
+检查是否存活
+
+### 示例
+
+```yaml
+condition:
+  - isAlive
+```
+
+## `distanceInRange`
+
+### 效果
+
+检查玩家和坐标的距离
+
+### 示例
+
+```yaml
+condition:
+  - distanceInRange:
+      # 距离
+      range: 10.0..20.0
+      x: 10
+      y: 10
+      z: 10
+```
+
+## `distanceOutRange`
+
+### 效果
+
+检查玩家和坐标的距离
+
+### 示例
+
+```yaml
+condition:
+  - distanceOutRange:
+      # 距离
+      range: 10.0..20.0
+      x: 10
+      y: 10
+      z: 10
 ```
 
 ## `hasEffect`
@@ -363,6 +433,36 @@ condition:
 ```yaml
 condition:
   - noPerm: perm.example
+```
+
+## `inWater`
+
+### 效果
+
+检查是否在水里
+
+### 示例
+
+```yaml
+condition:
+  - inWater
+```
+
+## `notInWater`
+
+### 别名
+
+- `outWater`
+
+### 效果
+
+检查是否不在水中
+
+### 示例
+
+```yaml
+condition:
+  - outWorld
 ```
 
 ## `inWorld`
