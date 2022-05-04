@@ -19,6 +19,7 @@ object ScriptManager {
     operator fun get(name: String) = scripts[name]
 
     fun load(sender: CommandSender?) {
+        scripts.clear()
         if (!scriptDir.exists()) {
             scriptDir.mkdirs()
             EScript.instance.getResource("example.yml")!!.use {
