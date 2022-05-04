@@ -10,7 +10,7 @@ import top.e404.escript.util.format
 
 @ExecutionSign
 object PotionDel : ExecutionParser {
-    override val headRegex = Regex("(?i)(del|rm|remove)potion")
+    override val headRegex = Regex("(?i)(del|rm|remove)(effect|potion)")
 
     override fun parse(content: Any?): Execution {
         if (content == null) throw ParseException("delPotion的内容不可为空")

@@ -11,7 +11,7 @@ import top.e404.escript.util.format
 
 @ExecutionSign
 object PotionAdd : ExecutionParser {
-    override val headRegex = Regex("(?i)addPotion")
+    override val headRegex = Regex("(?i)add(effect|potion)")
 
     override fun parse(content: Any?): Execution {
         if (content == null) throw ParseException("addPotion的内容不可为空")

@@ -298,6 +298,10 @@ on_allow:
 
 ## `addPotion`
 
+### 别名
+
+- `addEffect`
+
 ### 效果
 
 添加药水效果
@@ -320,6 +324,10 @@ on_allow:
 ```
 
 ## `delPotion`
+
+### 别名
+
+- `delEffect`
 
 ### 别名
 
