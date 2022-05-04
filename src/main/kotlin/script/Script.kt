@@ -45,7 +45,6 @@ class Script(
         while (scripts.isNotEmpty()) {
             val func = scripts.removeFirst()
             debug("执行脚本`$name`的`${cause}`脚本列表的第${index}项")
-            println(func::class.java.name)
             if (func is Delay.D) { // 延迟
                 debug("计划脚本`$name`的延时脚本(delay: ${func.duration}tick, 第${index}项)")
                 runTaskLater(func.duration) { execute(target, cause, index, scripts) }
