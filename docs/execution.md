@@ -429,6 +429,7 @@ on_allow:
 on_allow:
   # 格式1
   - particle:
+      type: REDSTONE
       x: %math_{player_x}+1%
       y: %math_{player_y}+1%
       z: %math_{player_z}+1%
