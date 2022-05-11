@@ -28,6 +28,8 @@
 5. `escript cd add <cd名字> <玩家名字> <时长>` 为此玩家增加自定义cd时长
 6. `escript cd minus <cd名字> <玩家名字> <时长>` 为此玩家减少自定义cd时长
 7. `escript cd reset <cd名字> <玩家名字>` 为此玩家增加自定义cd时长
+8. `escript debug` 切换自己接受debug消息 
+9. `escript debug <玩家名字>` 切换玩家接受debug消息
 
 ## 权限
 
