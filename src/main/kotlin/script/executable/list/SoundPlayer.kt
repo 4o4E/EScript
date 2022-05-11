@@ -9,8 +9,8 @@ import top.e404.escript.script.executable.ExecutionParser
 import top.e404.escript.util.format
 
 @ExecutionSign
-object PlaySound : ExecutionParser {
-    override val headRegex = Regex("(?i)(play)?sound")
+object SoundPlayer : ExecutionParser {
+    override val headRegex = Regex("(?i)soundP(layer)?")
 
     override fun parse(content: Any?): Execution {
         if (content == null) throw ParseException("sound的内容不可为空")
