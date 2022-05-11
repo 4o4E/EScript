@@ -1,5 +1,6 @@
 package top.e404.escript.util
 
+import org.bukkit.entity.Player
 import top.e404.escript.EScript
 import top.e404.escript.config.Config
 import java.util.logging.Level
@@ -7,6 +8,7 @@ import java.util.logging.Logger
 
 private val logger = EScript.instance.logger
 private val debugLogger = Logger.getLogger("EScriptDebug")
+val debuger = mutableListOf<Player>()
 
 /**
  * 在日志中打印INFO级别的DEBUG日志
@@ -14,7 +16,10 @@ private val debugLogger = Logger.getLogger("EScriptDebug")
  * @param msg 日志内容
  */
 fun debug(msg: String) =
-    run { if (Config.debug) debugLogger.info("&b$msg".color()) }
+    run {
+        debuger.forEach { it.sendMsgWithPrefix("&e$msg") }
+        if (Config.debug) debugLogger.info("&b$msg".color())
+    }
 
 fun <T> T.alsoDebug(block: (T) -> String) = also { debug(block(this)) }
 

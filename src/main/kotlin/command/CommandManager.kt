@@ -7,6 +7,7 @@ object CommandManager : AbstractCommandManager(
     listOf(
         Reload,
         Execute,
-        Cooldown
+        Cooldown,
+        Debug
     )
 )
