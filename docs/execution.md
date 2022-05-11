@@ -271,31 +271,6 @@ on_allow:
   - takeBal: 10.2
 ```
 
-## `playSound`
-
-### 别名
-
-- `sound`
-
-### 效果
-
-播放声音
-
-### 示例
-
-```yaml
-on_allow:
-  # 格式1
-  # 详细设置
-  - sound:
-      type: block.anvil.place
-      volume: 1
-      pitch: 1
-  # 格式2
-  # volume和pitch默认为1
-  - sound: block.anvil.place
-```
-
 ## `addPotion`
 
 ### 别名
@@ -396,6 +371,52 @@ on_allow:
       z: 10
 ```
 
+## `sound`
+
+### 效果
+
+在玩家位置播放声音, 所有周围的玩家均可听见
+
+### 示例
+
+```yaml
+on_allow:
+  # 格式1
+  # 详细设置
+  - sound:
+      type: block.anvil.place
+      volume: 1
+      pitch: 1
+  # 格式2
+  # volume和pitch默认为1
+  - sound: block.anvil.place
+```
+
+## `soundPlayer`
+
+### 别名
+
+- `sound`
+
+### 效果
+
+单独给玩家播放声音, 周围的其他玩家不会听见
+
+### 示例
+
+```yaml
+on_allow:
+  # 格式1
+  # 详细设置
+  - soundPlayer:
+      type: block.anvil.place
+      volume: 1
+      pitch: 1
+  # 格式2
+  # volume和pitch默认为1
+  - soundPlayer: block.anvil.place
+```
+
 ## `particle`
 
 ### 效果
@@ -424,6 +445,29 @@ on_allow:
       # data: STONE
   # 格式2
   - particle: END_ROD
+```
+
+## `teleport`
+
+### 别名
+
+- tp
+
+### 效果
+
+将玩家传送至指定位置
+
+### 示例
+
+```yaml
+on_allow:
+  - tp:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 0.0
+      yaw: 0.0 # 可省略, 默认值0
+      pitch: 0.0 # 可省略, 默认值0
 ```
 
 ## `title`

@@ -97,7 +97,7 @@ condition:
 
 ### 效果
 
-检查玩家和坐标的距离
+检查玩家和坐标的距离(xyz轴坐标差之和)
 
 ### 示例
 
@@ -106,16 +106,16 @@ condition:
   - distanceInRange:
       # 距离
       range: 10.0..20.0
-      x: 10
-      y: 10
-      z: 10
+      x: 10.0
+      y: 10.0
+      z: 10.0
 ```
 
 ## `distanceOutRange`
 
 ### 效果
 
-检查玩家和坐标的距离
+检查玩家和坐标的距离(xyz轴坐标差之和)
 
 ### 示例
 
@@ -124,9 +124,9 @@ condition:
   - distanceOutRange:
       # 距离
       range: 10.0..20.0
-      x: 10
-      y: 10
-      z: 10
+      x: 10.0
+      y: 10.0
+      z: 10.0
 ```
 
 ## `hasEffect`
@@ -165,6 +165,42 @@ condition:
       level: 1
   # 写法2
   - hasNotEffect: SLOW
+```
+
+## `fixDistanceInRange`
+
+### 效果
+
+检查玩家和坐标的距离(直线距离)
+
+### 示例
+
+```yaml
+condition:
+  - fixDistanceInRange:
+      # 距离
+      range: 10.0..20.0
+      x: 10.0
+      y: 10.0
+      z: 10.0
+```
+
+## `fixDistanceOutRange`
+
+### 效果
+
+检查玩家和坐标的距离(直线距离)
+
+### 示例
+
+```yaml
+condition:
+  - fixDistanceOutRange:
+      # 距离
+      range: 10.0..20.0
+      x: 10.0
+      y: 10.0
+      z: 10.0
 ```
 
 ## `allowFly`
