@@ -13,16 +13,16 @@ import top.e404.escript.script.executable.ExecutionParser
 import top.e404.escript.util.format
 
 @ExecutionSign
-object SpawnParticle : ExecutionParser {
+object Particle : ExecutionParser {
     override val headRegex = Regex("(?i)particle")
 
     override fun parse(content: Any?): Execution {
         if (content == null) throw ParseException("particle的内容不可为空")
         if (content is Map<*, *>) {
             val map = content.entries.associate { (k, v) -> k.toString().lowercase() to v }
-            val type = map["type"]?.toString() ?: throw ParseException("粒子类型不可为空")
+            val type = map["type"]?.toString()?.format() ?: throw ParseException("粒子类型不可为空")
             val particle = try {
-                Particle.valueOf(type.format())
+                Particle.valueOf(type)
             } catch (t: Throwable) {
                 throw ParseException("${type}不是有效粒子类型")
             }
@@ -38,8 +38,8 @@ object SpawnParticle : ExecutionParser {
                 val m = (e as Map<*, *>).entries.associate { (k, v) ->
                     k.toString().lowercase() to v.toString()
                 }
-                when (particle) {
-                    Particle.REDSTONE -> {
+                when (type) {
+                    "REDSTONE" -> {
                         val color = m["color"]
                             ?.removePrefix("#")
                             ?.toIntOrNull(16)
@@ -48,15 +48,29 @@ object SpawnParticle : ExecutionParser {
                         val size = m["size"]?.toFloatOrNull() ?: 1F
                         DustOptions(color, size)
                     }
-                    Particle.ITEM_CRACK -> try {
+                    "ITEM_CRACK" -> try {
                         Material.valueOf(e.toString().format())
                     } catch (t: Throwable) {
                         throw ParseException("材料格式错误")
                     }
-                    Particle.BLOCK_CRACK, Particle.BLOCK_DUST, Particle.FALLING_DUST -> try {
+                    "BLOCK_CRACK", "BLOCK_DUST", "FALLING_DUST" -> try {
                         Bukkit.createBlockData(Material.valueOf(e.toString().format()))
                     } catch (t: Throwable) {
                         throw ParseException("材料格式错误")
+                    }
+                    "VIBRATION" -> e.toString().toInt()
+                    "DUST_COLOR_TRANSITION" -> {
+                        val from = m["from"]
+                            ?.removePrefix("#")
+                            ?.toIntOrNull(16)
+                            ?.let { Color.fromRGB(it) }
+                            ?: Color.WHITE
+                        val to = m["to"]
+                            ?.removePrefix("#")
+                            ?.toIntOrNull(16)
+                            ?.let { Color.fromRGB(it) }
+                            ?: Color.RED
+                        Particle.DustTransition(from, to, m["size"]?.toFloat() ?: 1F)
                     }
                     else -> null
                 }

@@ -91,6 +91,28 @@ on_allow:
   - delay: 20
 ```
 
+## `freezing`
+
+### 别名
+
+- `freeze`
+
+### 效果
+
+设置玩家冰冻的刻度
+
+### 示例
+
+```yaml
+on_allow:
+  # 在原有霜冻刻度上+5
+  - freeze: +5
+  # 在原有霜冻刻度上-5
+  - freeze: -5
+  # 设置为5
+  - freeze: 5
+```
+
 ## `damage`
 
 ### 效果

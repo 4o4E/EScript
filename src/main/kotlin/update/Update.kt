@@ -13,6 +13,7 @@ import top.e404.escript.util.sendMsgWithPrefix
 import top.e404.escript.util.warn
 import java.net.URL
 
+@Suppress("DEPRECATION")
 object Update : Listener {
     private const val url = "https://api.github.com/repos/4o4E/EScript/releases"
     private const val mcbbs = "https://www.mcbbs.net/thread-1335472-1-1.html"

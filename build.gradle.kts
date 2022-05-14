@@ -8,7 +8,7 @@ plugins {
 
 allprojects {
     group = "top.e404"
-    version = "1.0.3"
+    version = "1.0.4"
 }
 
 repositories {
@@ -27,7 +27,7 @@ dependencies {
     // reflect
     implementation(kotlin("reflect"))
     // spigot
-    compileOnly("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     // papi
     compileOnly("me.clip:placeholderapi:2.10.10")
     // vault
