@@ -22,7 +22,7 @@ object Freezing : ExecutionParser {
                     val t = p.freezeTicks + s.removePrefix("+").papi(p).toInt()
                     p.freezeTicks = t.coerceIn(0..max)
                 } catch (t: Throwable) {
-                    throw ExecutionException("设置玩家饱食度时出现异常, 脚本: `$content`", t)
+                    throw ExecutionException("设置玩家冰冻刻度时出现异常, 脚本: `$content`", t)
                 }
             }
             s.startsWith("-") -> Execution { p: Player ->
@@ -31,7 +31,7 @@ object Freezing : ExecutionParser {
                     val t = p.freezeTicks - s.removePrefix("-").papi(p).toInt()
                     p.freezeTicks = t.coerceIn(0..max)
                 } catch (t: Throwable) {
-                    throw ExecutionException("设置玩家饱食度时出现异常, 脚本: `$content`", t)
+                    throw ExecutionException("设置玩家冰冻刻度时出现异常, 脚本: `$content`", t)
                 }
             }
             else -> Execution { p: Player ->
@@ -41,7 +41,7 @@ object Freezing : ExecutionParser {
                         .toInt()
                         .coerceIn(0..p.maxFreezeTicks)
                 } catch (t: Throwable) {
-                    throw ExecutionException("设置玩家饱食度时出现异常, 脚本: `$content`", t)
+                    throw ExecutionException("设置玩家冰冻刻度时出现异常, 脚本: `$content`", t)
                 }
             }
         }

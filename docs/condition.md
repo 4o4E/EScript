@@ -241,6 +241,27 @@ condition:
   - denyFly: SLOW
 ```
 
+## `gameMode`
+
+### 别名
+
+- `gm`
+
+### 效果
+
+检查玩家游戏模式是否在列表内
+
+分隔符可用: `,`, `;`, `.`, ` `
+
+游戏模式忽略大小写
+
+### 示例
+
+```yaml
+condition:
+  - gm: CREATIVE,SURVIVAL,ADVENTURE,SPECTATOR
+```
+
 ## `healthInRange`
 
 ### 效果
