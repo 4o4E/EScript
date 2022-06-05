@@ -1,0 +1,26 @@
+# 玩家执行指令时进行检测, 不检测控制台指令
+
+# 检测的名字
+name:
+  # 匹配的正则
+  # 必填项
+  regex: this_is_a_example_command
+
+  # 是否满足任意一条条件就判定为满足
+  # 学false或不写则需要满足所有条件
+  condition_any: true
+  # 条件
+  condition:
+    - inWorld: [ world ]
+
+  # 满足条件时执行的脚本
+  on_allow:
+    - msg: 你在世界 world 执行了指令 this_is_a_example_command
+  # 满足条件时取消此指令的执行
+  cancel_on_allow: true
+
+  # 不满足条件时执行的脚本
+  on_deny:
+    - msg: 你在世界 world 之外执行了指令 this_is_a_example_command
+  # 不满足条件时取消此指令的执行
+  cancel_on_deny: true
