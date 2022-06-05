@@ -17,13 +17,13 @@ import top.e404.escript.util.runTaskLater
  * @property allow 满足条件时执行的脚本
  * @property deny 不满足条件时执行的脚本
  */
-class Script(
-    val name: String,
-    val source: String,
-    var any: Boolean = false,
-    var condition: List<Condition> = listOf(),
-    var allow: List<Execution> = listOf(),
-    var deny: List<Execution> = listOf()
+open class Script(
+    open val name: String,
+    open val source: String,
+    open var any: Boolean = false,
+    open var condition: List<Condition> = listOf(),
+    open var allow: List<Execution> = listOf(),
+    open var deny: List<Execution> = listOf()
 ) : (Player) -> Unit {
     fun condition(p: Player): Boolean {
         debug("脚本`$name`开始判断, 模式`${if (any) "ANY" else "ALL"}`")
