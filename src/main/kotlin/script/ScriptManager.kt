@@ -72,40 +72,13 @@ object ScriptManager {
             }
             val any = cfg.getBoolean("condition_any")
             debug("开始加载脚本$path(条件)")
-            val condition = cfg.getList("condition")?.mapNotNull {
-                when (it) {
-                    null -> return@mapNotNull null
-                    is Map<*, *> -> {
-                        val e = it.entries.first()
-                        ConditionManager.parse(e.key.toString(), e.value)
-                    }
-                    else -> ConditionManager.parse(it.toString(), null)
-                }
-            } ?: emptyList()
+            val condition = ConditionManager.parse(cfg.getList("condition"))
             debug("完成加载脚本$path(条件), 共${condition.size}条")
             debug("开始加载脚本$path(on_allow)")
-            val onAllow = cfg.getList("on_allow")?.mapNotNull {
-                when (it) {
-                    null -> return@mapNotNull null
-                    is Map<*, *> -> {
-                        val e = it.entries.first()
-                        ExecutionManager.parse(e.key.toString(), e.value)
-                    }
-                    else -> ExecutionManager.parse(it.toString(), null)
-                }
-            } ?: emptyList()
+            val onAllow = ExecutionManager.parse(cfg.getList("on_allow"))
             debug("完成加载脚本$path(on_allow), 共${onAllow.size}项")
             debug("开始加载脚本$path(on_deny)")
-            val onDeny = cfg.getList("on_deny")?.mapNotNull {
-                when (it) {
-                    null -> null
-                    is Map<*, *> -> {
-                        val e = it.entries.first()
-                        ExecutionManager.parse(e.key.toString(), e.value)
-                    }
-                    else -> ExecutionManager.parse(it.toString(), null)
-                }
-            } ?: emptyList()
+            val onDeny = ExecutionManager.parse(cfg.getList("on_deny"))
             debug("完成加载脚本$path(on_deny), 共${onDeny.size}项")
             Script(name, source, any, condition, onAllow, onDeny)
         } ?: throw ParseException("无效脚本: $path")

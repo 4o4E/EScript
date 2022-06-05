@@ -40,4 +40,15 @@ object ExecutionManager {
         }
         throw NoSuchParserException("不存在解析${head}的执行编译器, 脚本: $content")
     }
+
+    fun parse(list: List<*>?) = list?.mapNotNull {
+        when (it) {
+            null -> return@mapNotNull null
+            is Map<*, *> -> {
+                val e = it.entries.first()
+                parse(e.key.toString(), e.value)
+            }
+            else -> parse(it.toString(), null)
+        }
+    } ?: emptyList()
 }
