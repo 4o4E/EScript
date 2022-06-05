@@ -32,13 +32,8 @@ example_on_deny2:
   condition:
     - hasItem:
         type: golden apple
-        lore:
-          - awa
-          - qaq
-        enchant:
-          - unbreaking
   on_allow:
-    - msg: 你拥有权限'escript.exec.example'
+    - msg: 你拥有金苹果
     - giveMoney: 100
   on_deny:
     - msg: 你不符合要求
