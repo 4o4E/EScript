@@ -25,7 +25,7 @@ class ExecutableProcessor : AbstractProcessor() {
         roundEnv: RoundEnvironment,
     ): Boolean {
         val list = roundEnv.filterHasAnnotation(ExecutionSign::class.java)
-        if (list.isNotEmpty()) File("src/main/resources/execution").writeText(list.joinToString("\n"))
+        if (list.isNotEmpty()) File("build/resources/main/execution").writeText(list.joinToString("\n"))
         return true
     }
 }

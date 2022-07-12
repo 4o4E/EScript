@@ -25,7 +25,7 @@ class ConditionProcessor : AbstractProcessor() {
         roundEnv: RoundEnvironment,
     ): Boolean {
         val list = roundEnv.filterHasAnnotation(ConditionSign::class.java)
-        if (list.isNotEmpty()) File("src/main/resources/condition").writeText(list.joinToString("\n"))
+        if (list.isNotEmpty()) File("build/resources/main/condition").writeText(list.joinToString("\n"))
         return true
     }
 }
