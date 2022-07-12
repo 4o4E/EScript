@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.7.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.kotlin.kapt") version "1.6.20"
 }
 
 allprojects {
     group = "top.e404"
-    version = "1.0.5"
+    version = "1.0.6"
 }
 
 repositories {
