@@ -534,3 +534,21 @@ on_allow:
   # 设置行走速度
   - walkSpeed: 5
 ```
+
+## `block`
+
+### 效果
+
+设置世界中的方块
+
+### 示例
+
+```yaml
+on_allow:
+  - block:
+      world: world
+      x: 100
+      y: 100
+      z: 100
+      type: STONE
+```
