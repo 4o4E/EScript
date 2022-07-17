@@ -10,6 +10,7 @@ import top.e404.escript.script.executable.ExecutionManager
 import top.e404.escript.util.debug
 import top.e404.escript.util.sendOrElse
 import top.e404.escript.util.warn
+import java.io.File
 
 object ScriptManager {
     private val scriptDir = EScript.instance.dataFolder.resolve("scripts")
@@ -29,19 +30,24 @@ object ScriptManager {
         }
         val files = scriptDir.listFiles() ?: return
         debug("开始从文件中加载脚本")
-        for (file in files) {
-            val path = file.absolutePath
+        for (file in files) file.load(sender)
+        debug("完成从文件中加载脚本, 共载入脚本${scripts.size}条")
+    }
+
+    private fun File.load(sender: CommandSender?) {
+        if (isFile) {
+            val path = absolutePath
             debug("开始加载${path}")
             val y = YamlConfiguration()
             try {
-                y.load(file)
+                y.load(this)
             } catch (ice: InvalidConfigurationException) {
-                val s = "无效的配置文件: ${file.absolutePath}"
+                val s = "无效的配置文件: ${absolutePath}"
                 sender.sendOrElse(s) { warn(s, ice) }
-                continue
+                return
             } catch (t: Throwable) {
                 warn("加载配置文件时出现异常", t)
-                continue
+                return
             }
             for (name in y.getKeys(false)) {
                 val old = scripts[name]
@@ -51,7 +57,7 @@ object ScriptManager {
                     continue
                 }
                 val script = try {
-                    y.getScript(name, file.absolutePath)
+                    y.getScript(name, absolutePath)
                 } catch (t: Throwable) {
                     val s = "加载脚本${name}时出现异常, 此脚本将不被加载"
                     sender.sendOrElse(s) { warn(s, t) }
@@ -60,8 +66,9 @@ object ScriptManager {
                 scripts[name] = script
             }
             debug("完成加载${path}")
+            return
         }
-        debug("完成从文件中加载脚本, 共载入脚本${scripts.size}条")
+        listFiles()?.forEach { it.load(sender) }
     }
 
     fun ConfigurationSection.getScript(path: String, source: String) =
