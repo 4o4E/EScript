@@ -6,6 +6,7 @@ import top.e404.escript.script.executable.Execution
 import top.e404.escript.script.executable.list.Delay
 import top.e404.escript.util.debug
 import top.e404.escript.util.runTaskLater
+import top.e404.escript.util.warn
 
 /**
  * 代表一个可执行的脚本
@@ -25,6 +26,10 @@ open class Script(
     open var allow: List<Execution> = listOf(),
     open var deny: List<Execution> = listOf()
 ) : (Player) -> Unit {
+    companion object {
+        const val MAX_EXEC_TIME = 1000L
+    }
+
     fun condition(p: Player): Boolean {
         debug("脚本`$name`开始判断, 模式`${if (any) "ANY" else "ALL"}`")
         val b = if (any) condition.any { it.invoke(p) }
@@ -39,10 +44,15 @@ open class Script(
         startIndex: Int,
         origin: List<Execution>
     ) {
+        val start = System.currentTimeMillis()
         debug("开始执行脚本`$name`的`${cause}`脚本列表")
         val scripts = ArrayList(origin)
         var index = startIndex
         while (scripts.isNotEmpty()) {
+            if (System.currentTimeMillis() - start > MAX_EXEC_TIME) {
+                warn("执行脚本`$name`用时超过${MAX_EXEC_TIME}ms, 强行停止, 停止时执行到`${cause}`脚本列表的第${index}项")
+                return
+            }
             val func = scripts.removeFirst()
             debug("执行脚本`$name`的`${cause}`脚本列表的第${index}项")
             if (func is Delay.D) { // 延迟
