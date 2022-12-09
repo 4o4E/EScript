@@ -48,7 +48,7 @@ object ItemTake : ExecutionParser {
                     if (lore != null && im.lore != lore) continue
                     if (enchant != im.enchants) continue
                     if (takeNotEnough || item.amount >= amount) {
-                        item.amount - amount
+                        item.amount -= amount
                         return@Execution
                     }
                 }
