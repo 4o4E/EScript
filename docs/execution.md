@@ -552,3 +552,21 @@ on_allow:
       z: 100
       type: STONE
 ```
+
+## `burn`
+
+### 效果
+
+点燃玩家
+
+### 示例
+
+```yaml
+on_allow:
+  # 在原有的基础上增加5tick的点燃时长
+  - burn: +5
+  # 在原有的基础上减少5tick的点燃时长
+  - burn: -5
+  # 设置玩家当前点燃时长为5tick
+  - burn: 5
+```
