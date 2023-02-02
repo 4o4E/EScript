@@ -2,6 +2,7 @@ package top.e404.escript.script.conditions
 
 import top.e404.escript.script.NoSuchParserException
 import top.e404.escript.util.debug
+import top.e404.escript.util.getInstance
 import top.e404.escript.util.readPluginResource
 import top.e404.escript.util.warn
 
@@ -16,13 +17,16 @@ object ConditionManager {
         readPluginResource("condition")
             .split("\n")
             .forEach {
-                val c = Class.forName(it)
-                val instance = c.kotlin.objectInstance
-                if (instance !is ConditionParser) {
-                    warn("跳过错误的条件编译器$it")
-                    return@forEach
+                try {
+                    val instance = Class.forName(it).getInstance<ConditionParser>()
+                    if (instance !is ConditionParser) {
+                        warn("跳过错误的条件编译器$it")
+                        return@forEach
+                    }
+                    registerParser(instance)
+                } catch (e: Exception) {
+                    warn("注册${it}失败", e)
                 }
-                registerParser(instance)
             }
         debug("完成加载条件编译器")
     }
@@ -48,6 +52,7 @@ object ConditionManager {
                 val e = it.entries.first()
                 parse(e.key.toString(), e.value)
             }
+
             else -> parse(it.toString(), null)
         }
     } ?: emptyList()
