@@ -32,6 +32,7 @@ class EScript : JavaPlugin() {
         ScriptManager.load(null) // 脚本管理器
         CommandTrigger.load(null) // 指令触发器
         CustomCooldown.load(null) // 自定义cd
+        CustomCounter.load(null) // 自定义计数器
         WorldScript.load(null) // 世界脚本
         HookManager.update() // 更新挂钩
 
@@ -50,7 +51,8 @@ class EScript : JavaPlugin() {
 
     override fun onDisable() {
         Bukkit.getScheduler().cancelTasks(this)
-        CustomCooldown.save(null)
+        CustomCooldown.save(null) // 自定义cd
+        CustomCounter.save(null) // 自定义计数器
         PlayerCache.save(null)
         PlaceholderAPIHook.unregister()
         info("&a已卸载, 感谢使用".color())
