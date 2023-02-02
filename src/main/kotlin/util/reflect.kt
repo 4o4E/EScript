@@ -6,3 +6,6 @@ fun readPluginResource(path: String) =
     EScript.instance
         .getResource(path)!!
         .use { String(it.readBytes()) }
+
+@Suppress("UNCHECKED_CAST")
+fun <T> Class<*>.getInstance() = getDeclaredField("INSTANCE").get(this) as? T
