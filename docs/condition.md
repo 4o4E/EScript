@@ -59,6 +59,67 @@ condition:
   - outCd: 自定义cd名字
 ```
 
+## `countCheck`
+
+### 别名
+
+- `checkCount`
+
+### 效果
+
+指定的计数器数值比较, 左侧计数器名, 右侧数值
+
+### 示例
+
+```yaml
+condition:
+  # 左侧写对应的计数器名字, 中间写判断符号, 右侧写判断的数值
+  - checkCount: "自定义计数器名字 == 5"
+  - checkCount: "自定义计数器名字 != 5"
+  - checkCount: "自定义计数器名字 >= 5"
+  - checkCount: "自定义计数器名字 <= 5"
+  - checkCount: "自定义计数器名字 > 5"
+  - checkCount: "自定义计数器名字 < 5"
+```
+
+## `countIn`
+
+### 别名
+
+- `inCount`
+
+### 效果
+
+判断指定的计数器数值是否在范围内
+
+### 示例
+
+```yaml
+condition:
+  - countIn:
+      name: 自定义计数器名字
+      range: 5..10
+```
+
+## `countOut`
+
+### 别名
+
+- `outCount`
+
+### 效果
+
+判断指定的计数器数值是否在范围外
+
+### 示例
+
+```yaml
+condition:
+  - countOut:
+      name: 自定义计数器名字
+      range: 5..10
+```
+
 ## `isDead`
 
 ### 别名
@@ -629,6 +690,19 @@ condition:
 ```yaml
 condition:
   - zInRange: -10.0..10.0
+```
+
+## `zOutRange`
+
+### 效果
+
+检查z坐标是否在指定范围外
+
+### 示例
+
+```yaml
+condition:
+  - zOutRange: -10.0..10.0
 ```
 
 ## `zOutRange`

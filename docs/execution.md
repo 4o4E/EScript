@@ -74,6 +74,35 @@ on_allow:
     value: 1000
 ```
 
+## `count`
+
+### 别名
+
+- `counter`
+
+### 效果
+
+修改玩家的自定义计数器数值
+
+### 示例
+
+```yaml
+on_allow:
+  - counter:
+    # 处理类型
+    # add: 添加计数器数值
+    # times: 计数器数值乘以value
+    # div: 计数器数值除以value
+    # rem: 计数器数值和value取模(求余数)
+    # set: 设置计数器数值
+    # reset: 重置计数器数值
+    type: add
+    # 计数器名字
+    name: 自定义计数器
+    # 数值
+    value: 1
+```
+
 ## `delay`
 
 ### 别名
