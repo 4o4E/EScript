@@ -1,10 +1,7 @@
 package top.e404.escript.command
 
 import org.bukkit.command.CommandSender
-import top.e404.escript.config.CommandTrigger
-import top.e404.escript.config.Config
-import top.e404.escript.config.CustomCooldown
-import top.e404.escript.config.WorldScript
+import top.e404.escript.config.*
 import top.e404.escript.hook.HookManager
 import top.e404.escript.script.ScriptManager
 import top.e404.escript.util.color
@@ -21,6 +18,7 @@ object Reload : AbstractCommand(
         ScriptManager.load(sender) // 脚本管理器
         CommandTrigger.load(sender) // 指令触发器
         CustomCooldown.load(sender) // 自定义cd
+        CustomCounter.load(sender) // 自定义计数器
         WorldScript.load(sender) // 世界脚本
         HookManager.update() // 更新挂钩
         sender.sendMsgWithPrefix("&a重载完成")
