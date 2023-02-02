@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.22"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.kotlin.kapt") version "1.6.20"
+    id("org.jetbrains.kotlin.kapt") version "1.7.22"
 }
 
 allprojects {
     group = "top.e404"
-    version = "1.0.8"
+    version = "1.0.9"
 }
 
 repositories {
@@ -24,8 +24,6 @@ repositories {
 }
 
 dependencies {
-    // reflect
-    implementation(kotlin("reflect"))
     // spigot
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     // papi
@@ -42,8 +40,9 @@ dependencies {
 tasks {
     shadowJar {
         archiveFileName.set("${project.name}-${project.version}.jar")
-        exclude("META-INF/*")
-        relocate("org.bstats", "top.e404.escript.bstats")
+        exclude("META-INF/**")
+        relocate("org.bstats", "top.e404.escript.relocate.bstats")
+        relocate("kotlin", "top.e404.escript.relocate.kotlin")
         doFirst {
             for (file in File("jar").listFiles() ?: arrayOf()) {
                 println("正在删除`${file.name}`")
