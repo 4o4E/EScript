@@ -72,8 +72,9 @@
 2022.07.17 - 1.0.7 修复从文件夹中递归加载脚本的bug
 2022.12.09 - 1.0.8 修复value不存在时报错的问题, 添加脚本执行最大时间的检测, 修复不正确拿去玩家物品的bug, 添加点燃玩家的脚本
 2023.02.03 - 1.0.9 添加自定义计数器及其条件和方法, 添加relocate, 移除对kotlin reflect的依赖
+2023.02.03 - 1.0.10 修复bug
 ```
 
 ## bstats
 
-![bstats](https://bstats.org/signatures/bukkit/EScript.svg)
+[![bstats](https://bstats.org/signatures/bukkit/EScript.svg)](https://bstats.org/plugin/bukkit/EScript)
