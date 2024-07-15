@@ -1,2 +1,2 @@
 rootProject.name = "EScript"
-include(":apt")
+include(":ksp")

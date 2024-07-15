@@ -26,13 +26,4 @@ hs_err_pid*
 .gradle/
 .idea/
 build/
-gradle/
 jar/
-
-# projecr file
-gradlew
-gradlew.bat
-
-# apt file
-src/main/resources/condition
-src/main/resources/execution

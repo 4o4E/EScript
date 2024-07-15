@@ -1,9 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "2.0.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.kotlin.kapt") version "1.7.22"
+    id("com.google.devtools.ksp") version "2.0.0-1.0.21"
 }
 
 allprojects {
@@ -31,10 +29,10 @@ dependencies {
     // vault
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     // bstats
-    implementation("org.bstats:bstats-bukkit:3.0.0")
-    // apt
-    implementation(project(":apt"))
-    kapt(project(":apt"))
+    implementation("org.bstats:bstats-bukkit:3.0.2")
+    // ksp
+    implementation(project(":ksp"))
+    ksp(project(":ksp"))
 }
 
 tasks {
@@ -63,9 +61,5 @@ tasks {
         filesMatching("plugin.yml") {
             expand(project.properties)
         }
-    }
-
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }
